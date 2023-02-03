@@ -9,6 +9,4 @@ print('And ', user_num1, ' cubed is ', user_num_cubed, ' !!')
 print('Enter another integer:')
 user_num2 = int(input())
 print(user_num1, ' + ', user_num2, ' is ', user_num1+user_num2)
-print(user_num1, ' + ', user_num2, ' is ', user_num1*user_num2)
-
-
+print(user_num1, ' * ', user_num2, ' is ', user_num1*user_num2)
