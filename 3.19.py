@@ -13,8 +13,8 @@ print('')
 print('Choose a color to paint the wall:')
 color = input()
 colors = {
-    'red': '$35',
-    'blue': '$25',
-    'green': '$23'
+    'red': 35,
+    'blue': 25,
+    'green': 23
 }
-print('Cost of purchasing', color, 'paint:', colors[color])
+print(f'Cost of purchasing {color} paint: ${colors[color]*cans}')
