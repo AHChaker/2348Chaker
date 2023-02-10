@@ -1,3 +1,4 @@
+# Hamid Chaker 2060843
 print('Enter integer:')
 user_num1 = int(input())
 user_num_squared = user_num1 * user_num1
