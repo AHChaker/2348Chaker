@@ -5,7 +5,7 @@ csv_input = input()
 with open(csv_input, 'r') as f:
     reader = csv.reader(f)
     for row in reader:
-        list_of_words = row
+        words_list = row
 
 
 no_duplicates = list(dict.fromkeys(words_list))
