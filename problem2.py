@@ -1,4 +1,4 @@
-# take input date from the user and return date if input date is in correct format, else will return empty string
+#hamid chaker 2060843
 def get_date(date):
     correct = 0
     new_date = ""
