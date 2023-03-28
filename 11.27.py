@@ -39,19 +39,7 @@ print("ROSTER")
 for num, rate in player_dict.items():
     print(f'Jersey number: {num}, Rating: {rate}')
 
-print()
-
-print("MENU")
-print("a - Add player")
-print("d - Remove player")
-print("u - Update player rating")
-print("r - Output players above a rating")
-print("o - Output roster")
-print("q - Quit")
-print()
-print("Choose an option:")
-
-user_input = str(input())
+user_input = ''
 
 while user_input != "q":
     print('')
@@ -62,9 +50,9 @@ while user_input != "q":
     print("r - Output players above a rating")
     print("o - Output roster")
     print("q - Quit")
-    print()
-    print("Choose an option:")
-    user_input = str(input())
+    print('')
+    user_input = str(input("Choose an option:"))
+    print('')
     if user_input == 'o':
         print("ROSTER")
         for num, rate in player_dict.items():
@@ -75,6 +63,7 @@ while user_input != "q":
         print('Enter a new player\'s rating')
         new_rate = int(input())
         player_dict.update({new_jersey: new_rate})
+        player_dict = dict(sorted(player_dict.items()))
     elif user_input == 'd':
         print('Enter a jersey number')
         del_jersey = int(input())
@@ -91,4 +80,4 @@ while user_input != "q":
         print(f'ABOVE {above_rating}')
         for num, rat in player_dict.items():
             if rat > above_rating:
-                print(f'Jersey number: {num}, Rating {rat}')
+                print(f'Jersey number: {num}, Rating: {rat}')
