@@ -79,3 +79,16 @@ while user_input != "q":
         print('Enter a jersey number')
         del_jersey = int(input())
         player_dict.pop(del_jersey)
+    elif user_input == 'u':
+        print('Enter a jersey number')
+        update_jersey = int(input())
+        print("Enter a new rating for player:")
+        update_rating = int(input())
+        player_dict.update({update_jersey: update_rating})
+    elif user_input == 'r':
+        print("Enter a rating:")
+        above_rating = int(input())
+        print(f'ABOVE {above_rating}')
+        for num, rat in player_dict.items():
+            if rat > above_rating:
+                print(f'Jersey number: {num}, Rating {rat}')
