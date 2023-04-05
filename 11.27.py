@@ -1,3 +1,4 @@
+#Hamid Chaker 2060843
 print('Enter player 1\'s jersey number:')
 jersey1 = int(input())
 print('Enter player 1\'s rating:')
