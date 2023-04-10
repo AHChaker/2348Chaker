@@ -1,0 +1,153 @@
+#Hamid Chaker 2060843
+import csv
+from datetime import datetime
+
+class Inventory:
+    def __init__(self, item_id, manufacturer, type, price, service_date, damaged=False):
+        self.item_id = item_id
+        self.manufacturer = manufacturer
+        self.type = type
+        self.price = price
+        self.service_date = datetime.strptime(service_date, "%m/%d/%Y")
+        self.damaged = damaged
+
+
+def read_manufacturers(file):
+    inv = {}
+    with open(file, "r") as f:
+        manu_list_reader = csv.reader(f)
+        #iterate over every line and in turn, assign every value to a var
+        for line in manu_list_reader:
+            item_id = line[0]
+            manufacturer = line[1]
+            type = line[2]
+            if len(line) > 3:
+                damaged = line[3]
+            inv[item_id] = [manufacturer, type, damaged]
+    return inv
+
+
+def read_prices(file):
+    #do it again (ft. Chris Brown)
+    inv = {}
+    with open(file, 'r') as f:
+        price_reader = csv.reader(f)
+        for line in price_reader:
+            item_id = line[0]
+            price = line[1:]
+            inv[item_id] = price
+    return inv
+
+
+def read_dates(file):
+    # hit me baby one more time. there has to be a way to mix the 3 functions but wtv
+    inv = {}
+    with open(file, 'r') as f:
+        price_reader = csv.reader(f)
+        for line in price_reader:
+            item_id = line[0]
+            date = line[1:]
+            inv[item_id] = date
+    return inv
+
+
+def all_together(manu, price, date):
+    inv = {}
+    #checking each files item ids to see if they match
+    for item_id, values in manu.items():
+        if item_id in price and item_id in date:
+            #if files match and format is consistent, assign values in file to variable before initiazling as class att
+            new_price = price[item_id][0]
+            new_date = date[item_id][0]
+            inv[item_id] = Inventory(item_id, values[0], values[1], new_price, new_date, values[2])
+    return inv
+
+
+def full_inventory(inv):
+    # tried implementing sorting on the outside. massive pain so just agave each output their own sort
+    def get_manufacturer(x):
+        return x.manufacturer
+
+    sorted_manufacturer = sorted(inv.values(), key=get_manufacturer)
+
+    with open('FullInventory.csv', 'w', newline='') as f:
+        full_writer = csv.writer(f)
+        for i in sorted_manufacturer:
+            full_writer.writerow([i.item_id, i.manufacturer, i.type, i.price, i.service_date.strftime('%m/%d/%Y'), i.damaged])
+
+
+def type_inventories(inv):
+    # dict for each item type and it turn writing the file out
+    types_of_items = {}
+    for item_id, i in inv.items():
+        type = i.type
+        if type not in types_of_items:
+            #  create empty list to store values in
+            types_of_items[type] = []
+        types_of_items[type].append((i.item_id, i.manufacturer, i.price, i.service_date.strftime('%m/%d/%Y'), i.damaged))
+
+
+    for type, values in types_of_items.items():
+        #instructions included cap Laptop so capitalize came in clutch
+        filename = f"{type.capitalize()}Inventory.csv"
+
+        def get_item_id(x):
+            return x[0]
+        sorted_item_id = sorted(values, key=get_item_id)
+
+
+        with open(filename, mode='w', newline='') as f:
+            writer = csv.writer(f)
+            for i in sorted_item_id:
+                writer.writerow(i)
+
+
+def past_service_date(inv):
+    #date and damaged are about identical in their format. date has to compare tho
+    current_date = datetime.today()
+    items_past_due = []
+    for item_id, i in inv.items():
+        item_date = i.service_date
+        if current_date > item_date:
+            items_past_due.append(i)
+
+    def get_service_date(x):
+        return x.service_date
+    sorted_items_date = sorted(items_past_due, key=get_service_date)
+
+    with open('PastServiceDates.csv', 'w', newline='') as f:
+        date_writer = csv.writer(f)
+        for i in sorted_items_date:
+            date_writer.writerow([i.item_id, i.manufacturer, i.type, i.price, i.service_date.strftime('%m/%d/%Y'), i.damaged])
+
+def damaged_inventory(inv):
+    damaged_items = []
+    for item_id,i in inv.items():
+        item_damaged = i.damaged
+        if item_damaged:
+            damaged_items.append(i)
+
+    def get_price(x):
+        return x.price
+    sorted_price = sorted(damaged_items, key=get_price)
+
+    with open('DamagedInventory.csv', 'w', newline='') as f:
+        damaged_writer = csv.writer(f)
+        for i in sorted_price:
+            damaged_writer.writerow([i.item_id, i.manufacturer, i.type, i.price, i.service_date.strftime('%m/%d/%Y')])
+
+
+
+
+if __name__ == '__main__':
+    manu = read_manufacturers('ManufacturerList.csv')
+    price = read_prices('PriceList.csv')
+    service_dates = read_dates('ServiceDatesList.csv')
+
+
+    full = all_together(manu, price, service_dates)
+
+    full_inventory(full)
+    type_inventories(full)
+    past_service_date(full)
+    damaged_inventory(full)
