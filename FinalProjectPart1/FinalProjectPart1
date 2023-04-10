@@ -115,7 +115,7 @@ def past_service_date(inv):
         return x.service_date
     sorted_items_date = sorted(items_past_due, key=get_service_date)
 
-    with open('PastServiceDates.csv', 'w', newline='') as f:
+    with open('PastServiceDateInventory.csv', 'w', newline='') as f:
         date_writer = csv.writer(f)
         for i in sorted_items_date:
             date_writer.writerow([i.item_id, i.manufacturer, i.type, i.price, i.service_date.strftime('%m/%d/%Y'), i.damaged])
