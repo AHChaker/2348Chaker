@@ -57,7 +57,7 @@ def all_together(manu, price, date):
     for item_id, values in manu.items():
         if item_id in price and item_id in date:
             #if files match and format is consistent, assign values in file to variable before initiazling as class att
-            new_price = price[item_id][0]
+            new_price = float(price[item_id][0])
             new_date = date[item_id][0]
             inv[item_id] = Inventory(item_id, values[0], values[1], new_price, new_date, values[2])
     return inv
