@@ -19,10 +19,10 @@ def read_manufacturers(file):
         #iterate over every line and in turn, assign every value to a var
         for line in manu_list_reader:
             item_id = line[0]
-            manufacturer = line[1]
-            type = line[2]
+            manufacturer = line[1].strip()
+            type = line[2].strip()
             if len(line) > 3:
-                damaged = line[3]
+                damaged = line[3].strip()
             inv[item_id] = [manufacturer, type, damaged]
     return inv
 
