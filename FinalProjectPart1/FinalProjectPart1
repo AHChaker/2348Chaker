@@ -108,7 +108,7 @@ def find_closest_item(item, inv):
     #list to hold the matches, matches will include the same criteria as previously mentiioned except for the manufacturer name not being the same
     m = []
     for i in inv.values():
-        if i.manufacturer.lower() != item.manufacturer.lower() and i.item_type.lower() == item.item_type.lower() and not i.damaged and i.service_date > datetime.now():
+        if i.manufacturer.lower() != item.manufacturer.lower() and i.type.lower() == item.type.lower() and not i.damaged and i.service_date > datetime.now():
             m.append(i)
 
     #set variable to none and the min_diff to closest thing to infinity (not really)
@@ -125,4 +125,10 @@ def find_closest_item(item, inv):
 
 
 if __name__ == '__main__':
-
+    #store all the info into inventory, enter the product you would like to query, and find_item will go over the inventory
+    inventory = all_together(read_manufacturers('ManufacturerList.csv'), read_prices('PriceList.csv'), read_dates('ServiceDatesList.csv'))
+    while True:
+        inp = input("\nEnter the item you are looking for, otherwise press 'q' to quit: ")
+        if inp == 'q':
+            break
+        find_item(inp, inventory)
