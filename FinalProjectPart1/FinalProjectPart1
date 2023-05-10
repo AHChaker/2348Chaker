@@ -71,42 +71,37 @@ def find_item(query, inv):
     # Conditional and only append to keywords if our word matches the manufacturer and item type of our item
     for word in query.split():
         for item in inv.values():
-            if word.lower() == item.manufacturer.lower() or word.lower() == item.item_type.lower():
+            if word.lower() == item.manufacturer.lower() or word.lower() == item.type.lower():
                 kw.append(word.lower())
                 break
 
     # join the keywords to include in our search for matches
     match_search = ' '.join(kw)
-
     # Again loop through our inventory values, First check whether our manufacturer and type match the keywords in our match
     # and then check whether the items are not damaged and not past their due date.
     for item in inv.values():
-        if f"{item.manufacturer} {item.item_type}".lower() == match_search.lower():
+        if f"{item.manufacturer} {item.type}".lower() == match_search.lower():
             if not item.damaged and item.service_date > datetime.now():
                 m.append(item)
-
     '''Check how many matches were found and display the appropriate result
     if one was found, then print the item details, and a you may also consider, where the conditions are the same item type but different manufacturer
     if there are more than 1 matches, display the most expensive one, i had to write a function to grab the most expensive one and then call that'''
     if len(m) == 0:
         print("No such item in inventory")
-
     elif len(m) == 1:
         item = m[0]
-        print("Your item is:", item.item_id, item.manufacturer, item.item_type, item.price)
+        print("Your item is:", item.item_id, item.manufacturer, item.type, item.price)
         closest = find_closest_item(item, inv)
         if closest:
-            print("You may also consider:", closest.item_id, closest.manufacturer, closest.item_type, closest.price)
-
+            print("You may also consider:", closest.item_id, closest.manufacturer, closest.type, closest.price)
     else:
         def h_item(item):
             return item.price
-
         max_item = max(m, key=h_item)
-        print(f"Your item is: {max_item.item_id} {max_item.manufacturer} {max_item.item_type} {max_item.price}")
+        print(f"Your item is: {max_item.item_id} {max_item.manufacturer} {max_item.type} {max_item.price}")
         closest = find_closest_item(item, inv)
         if closest:
-            print("You may also consider:", closest.item_id, closest.manufacturer, closest.item_type, closest.price)
+            print("You may also consider:", closest.item_id, closest.manufacturer, closest.type, closest.price)
 
 
 def find_closest_item(item, inv):
